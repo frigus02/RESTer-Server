@@ -1,0 +1,52 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<dom-module id="rester-page-home">
+    <template>
+        <style>
+            :host {
+                display: block;
+                padding: 8px 64px;
+            }
+
+            .screenshot {
+                float: right;
+                width: 320px;
+            }
+
+            .screenshot img {
+                width: 100%;
+            }
+        </style>
+
+        <figure class="screenshot">
+            <img src="/images/screenshot.png">
+            <figcaption>RESTer in Chrome</figcaption>
+        </figure>
+
+        <p>You can...</p>
+        <ul>
+            <li>perform HTTP requests with any method, URL, body and custom headers.</li>
+            <li>save favorite requests and organize them in collections.</li>
+            <li>view a history of your requests, which includes the full request and response.</li>
+        </ul>
+
+        <p>The add-on supports the following goodies:</p>
+        <ul>
+            <li>Create and save your authorization headers with Basic or OAuth 2 authentication.</li>
+            <li>Use placeholders in saved requests.</li>
+            <li>Use shortcuts for the frequently used actions (try pressing "?" to see the available shortcuts for the current context).</li>
+        </ul>
+
+        <p>Download for: <a href="https://addons.mozilla.org/firefox/addon/rester">Firefox</a> | <a href="https://chrome.google.com/webstore/detail/rester/eejfoncpjfgmeleakejdcanedmefagga">Google Chrome</a></p>
+    </template>
+
+    <script>
+        class ResterPageHome extends Polymer.Element {
+            static get is() {
+                return 'rester-page-home';
+            }
+        }
+
+        window.customElements.define(ResterPageHome.is, ResterPageHome);
+    </script>
+</dom-module>

@@ -1,0 +1,37 @@
+<h1>Register</h1>
+<form action="" method="POST">
+    <h2>Profile</h2>
+    <img src="{{user.pictureUrl}}">
+    <label>
+        Given name: <input type="text" name="givenName" value="{{user.givenName}}">
+    </label>
+    <label>
+        Family name: <input type="text" name="familyName" value="{{user.familyName}}">
+    </label>
+    <label>
+        Display name: <input type="text" name="displayName" value="{{user.displayName}}">
+    </label>
+    <label>
+        Street: <input type="text" name="street" value="{{user.street}}">
+    </label>
+    <label>
+        City: <input type="text" name="city" value="{{user.city}}">
+    </label>
+    <label>
+        ZIP/Postal code: <input type="text" name="zip" value="{{user.zip}}">
+    </label>
+    <label>
+        State/Province: <input type="text" name="state" value="{{user.state}}">
+    </label>
+    <label>
+        Country: <input type="text" name="country" value="{{user.country}}">
+    </label>
+    <label>
+        Email: <input type="text" name="email" readonly value="{{user.email}}">
+    </label>
+
+    <h2>Account</h2>
+    <div>IDP: {{account.idp}}</div>
+
+    <input type="submit" value="Create Account">
+</form>

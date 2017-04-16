@@ -1,0 +1,13 @@
+{
+    "plugins": [
+        "html"
+    ],
+    "settings": {
+        "html/indent": "+4",
+        "html/report-bad-indent": 2
+    },
+    "env": {
+        "browser": true,
+        "es6": true
+    }
+}
