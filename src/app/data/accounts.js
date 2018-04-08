@@ -10,7 +10,6 @@
 
 const tableUtils = require('../utils/azure-table');
 
-
 const table = new tableUtils.Table('Accounts', {
     serialize(obj) {
         return {
@@ -28,15 +27,14 @@ const table = new tableUtils.Table('Accounts', {
     }
 });
 
-
-exports.createOrUpdate = function (account) {
+exports.createOrUpdate = function(account) {
     return table.insertOrReplace(account).then(() => account);
 };
 
-exports.get = function (idp, id) {
+exports.get = function(idp, id) {
     return table.retrieve(idp, id);
 };
 
-exports.delete = function (idp, id) {
+exports.delete = function(idp, id) {
     return table.delete({ idp, id });
 };

@@ -12,7 +12,6 @@ const uuidV4 = require('uuid/v4');
 
 const tableUtils = require('../utils/azure-table');
 
-
 const table = new tableUtils.Table('StsStates', {
     serialize(obj) {
         return {
@@ -31,16 +30,16 @@ const table = new tableUtils.Table('StsStates', {
 });
 const defaultValidForMillis = 1000 * 60 * 60;
 
-
 function getPartitionKeyFromExpires(expires) {
-    return `${expires.getFullYear()}-${expires.getMonth() + 1}-${expires.getDate()}`;
+    return `${expires.getFullYear()}-${expires.getMonth() +
+        1}-${expires.getDate()}`;
 }
 
 function getExpiresFromId(id) {
     return new Date(parseInt(id.split('-')[0], 10));
 }
 
-exports.create = function (properties) {
+exports.create = function(properties) {
     const expires = new Date(Date.now() + defaultValidForMillis);
     const state = {
         id: `${expires.getTime()}-${uuidV4()}`,
@@ -51,7 +50,7 @@ exports.create = function (properties) {
     return table.insert(state).then(() => state);
 };
 
-exports.get = function (id) {
+exports.get = function(id) {
     const expires = getExpiresFromId(id);
     const partitionKey = getPartitionKeyFromExpires(expires);
 
@@ -62,10 +61,10 @@ exports.get = function (id) {
     });
 };
 
-exports.update = function (state) {
+exports.update = function(state) {
     return table.replace(state);
 };
 
-exports.delete = function (id) {
+exports.delete = function(id) {
     return table.delete({ id, expires: getExpiresFromId(id) });
 };

@@ -10,7 +10,7 @@ members of a team.
 1.	Install dependencies
 
 	```
-	npm install
+	yarn install
 	```
 
 2.	Setup environment variables
@@ -24,5 +24,5 @@ members of a team.
 3.	Start server
 
 	```
-	npm start
+	yarn start
 	```

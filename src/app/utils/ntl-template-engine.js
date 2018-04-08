@@ -2,7 +2,6 @@
 
 const fs = require('fs');
 
-
 const hiddenKeys = ['settings', '_locals', 'cache'];
 function filderHiddenKeys(key, value) {
     if (!hiddenKeys.includes(key)) {
@@ -10,8 +9,8 @@ function filderHiddenKeys(key, value) {
     }
 }
 
-module.exports = function (filePath, options, callback) {
-    fs.readFile(filePath, { encoding: 'utf-8' }, function (err, content) {
+module.exports = function(filePath, options, callback) {
+    fs.readFile(filePath, { encoding: 'utf-8' }, function(err, content) {
         if (err) {
             return callback(err);
         }

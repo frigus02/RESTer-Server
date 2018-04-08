@@ -7,21 +7,24 @@ const users = require('../../data/users');
 const oauth2Utils = require('./utils/oauth2.js');
 const stateUtils = require('./utils/state');
 
-
 const router = express.Router(); // eslint-disable-line new-cap
 
-router.get('/', function (req, res, next) {
-    stateUtils.getRequiredState(req.query.state).then(state => {
+router.get('/', async function(req, res, next) {
+    try {
+        const state = await stateUtils.getRequiredState(req.query.state);
         res.render('sts/register', {
             title: 'RESTer - Register',
             user: state.properties.user,
             account: state.properties.account
         });
-    }, next);
+    } catch (err) {
+        next(err);
+    }
 });
 
-router.post('/', function (req, res, next) {
-    stateUtils.getRequiredState(req.query.state).then(state => {
+router.post('/', async function(req, res, next) {
+    try {
+        const state = await stateUtils.getRequiredState(req.query.state);
         const userId = users.generateId();
         const account = {
             id: state.properties.account.id,
@@ -39,24 +42,30 @@ router.post('/', function (req, res, next) {
             state: req.body.state,
             country: req.body.country,
             email: req.body.email,
-            accounts: [
-                account
-            ]
+            accounts: [account]
         };
 
-        accounts.createOrUpdate(account).then(() => {
-            return users.createOrUpdate(user);
-        }).then(() => {
-            return oauth2Utils.getSuccessRedirectUrl(state.properties.oauth2, userId);
-        }).then(redirectUrl => {
-            return res.redirect(redirectUrl);
-        }).catch(err => {
-            return res.redirect(oauth2Utils.getErrorRedirectUrl(
+        try {
+            await accounts.createOrUpdate(account);
+            await users.createOrUpdate(user);
+
+            const redirectUrl = await oauth2Utils.getSuccessRedirectUrl(
                 state.properties.oauth2,
-                'server_error',
-                `Failed to create user account: ${err.message}`));
-        });
-    }, next);
+                userId
+            );
+            res.redirect(redirectUrl);
+        } catch (err) {
+            return res.redirect(
+                oauth2Utils.getErrorRedirectUrl(
+                    state.properties.oauth2,
+                    'server_error',
+                    `Failed to create user account: ${err.message}`
+                )
+            );
+        }
+    } catch (err) {
+        next(err);
+    }
 });
 
 module.exports = router;

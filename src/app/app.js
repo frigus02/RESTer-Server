@@ -7,7 +7,6 @@ const bunyan = require('bunyan');
 const bunyanMiddleware = require('bunyan-middleware');
 const bodyParser = require('body-parser');
 
-
 const app = express();
 const logger = bunyan.createLogger({ name: 'RESTer' });
 
@@ -15,9 +14,11 @@ app.engine('ntl', require('./utils/ntl-template-engine'));
 app.set('views', path.join(__dirname, '..', 'site'));
 app.set('view engine', 'ntl');
 
-app.use(bunyanMiddleware({
-    logger: logger
-}));
+app.use(
+    bunyanMiddleware({
+        logger: logger
+    })
+);
 
 app.use(require('./middleware/https-redirect'));
 

@@ -1,14 +1,15 @@
 {
+    "parser": "babel-eslint",
+    "parserOptions": {
+        "sourceType": "script"
+    },
     "env": {
         "node": true,
         "es6": true
     },
-    "extends": [
-        "eslint:recommended",
-        "crockford"
-    ],
+    "extends": ["eslint:recommended", "crockford", "prettier"],
     "rules": {
-        "indent": [2, 4, {"SwitchCase": 1}],
+        "indent": [2, 4, { "SwitchCase": 1 }],
         "no-plusplus": 0,
         "no-underscore-dangle": 0,
         "no-use-before-define": 0,

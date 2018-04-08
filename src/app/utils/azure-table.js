@@ -1,23 +1,29 @@
 'use strict';
 
 const azure = require('azure-storage');
-const denodeify = require('denodeify');
-
+const { promisify } = require('util');
 
 const retryOperations = new azure.ExponentialRetryPolicyFilter();
 const tableService = azure.createTableService().withFilter(retryOperations);
 const entGen = azure.TableUtilities.entityGenerator;
 
-const createTableIfNotExists = denodeify(tableService.createTableIfNotExists.bind(tableService));
-const insertEntity = denodeify(tableService.insertEntity.bind(tableService));
-const replaceEntity = denodeify(tableService.replaceEntity.bind(tableService));
-const mergeEntity = denodeify(tableService.mergeEntity.bind(tableService));
-const insertOrReplaceEntity = denodeify(tableService.insertOrReplaceEntity.bind(tableService));
-const insertOrMergeEntity = denodeify(tableService.insertOrMergeEntity.bind(tableService));
-const retrieveEntity = denodeify(tableService.retrieveEntity.bind(tableService));
-const queryEntities = denodeify(tableService.queryEntities.bind(tableService));
-const deleteEntity = denodeify(tableService.deleteEntity.bind(tableService));
-
+const createTableIfNotExists = promisify(
+    tableService.createTableIfNotExists.bind(tableService)
+);
+const insertEntity = promisify(tableService.insertEntity.bind(tableService));
+const replaceEntity = promisify(tableService.replaceEntity.bind(tableService));
+const mergeEntity = promisify(tableService.mergeEntity.bind(tableService));
+const insertOrReplaceEntity = promisify(
+    tableService.insertOrReplaceEntity.bind(tableService)
+);
+const insertOrMergeEntity = promisify(
+    tableService.insertOrMergeEntity.bind(tableService)
+);
+const retrieveEntity = promisify(
+    tableService.retrieveEntity.bind(tableService)
+);
+const queryEntities = promisify(tableService.queryEntities.bind(tableService));
+const deleteEntity = promisify(tableService.deleteEntity.bind(tableService));
 
 class Table {
     constructor(tableName, converter) {
@@ -68,23 +74,33 @@ class Table {
     }
 
     insert(obj) {
-        return this._createTableIfNotExists().then(() => insertEntity(this.tableName, this._serialize(obj)));
+        return this._createTableIfNotExists().then(() =>
+            insertEntity(this.tableName, this._serialize(obj))
+        );
     }
 
     replace(obj) {
-        return this._createTableIfNotExists().then(() => replaceEntity(this.tableName, this._serialize(obj)));
+        return this._createTableIfNotExists().then(() =>
+            replaceEntity(this.tableName, this._serialize(obj))
+        );
     }
 
     merge(obj) {
-        return this._createTableIfNotExists().then(() => mergeEntity(this.tableName, this._serialize(obj)));
+        return this._createTableIfNotExists().then(() =>
+            mergeEntity(this.tableName, this._serialize(obj))
+        );
     }
 
     insertOrReplace(obj) {
-        return this._createTableIfNotExists().then(() => insertOrReplaceEntity(this.tableName, this._serialize(obj)));
+        return this._createTableIfNotExists().then(() =>
+            insertOrReplaceEntity(this.tableName, this._serialize(obj))
+        );
     }
 
     insertOrMerge(obj) {
-        return this._createTableIfNotExists().then(() => insertOrMergeEntity(this.tableName, this._serialize(obj)));
+        return this._createTableIfNotExists().then(() =>
+            insertOrMergeEntity(this.tableName, this._serialize(obj))
+        );
     }
 
     retrieve(partitionKey, rowKey) {
@@ -103,11 +119,15 @@ class Table {
     query(query) {
         return this._createTableIfNotExists()
             .then(() => queryEntities(this.tableName, query, null))
-            .then(result => result.entries.map(entity => this._deserialize(entity)));
+            .then(result =>
+                result.entries.map(entity => this._deserialize(entity))
+            );
     }
 
     delete(obj) {
-        return this._createTableIfNotExists().then(() => deleteEntity(this.tableName, this._serialize(obj)));
+        return this._createTableIfNotExists().then(() =>
+            deleteEntity(this.tableName, this._serialize(obj))
+        );
     }
 }
 

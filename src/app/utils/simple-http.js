@@ -4,7 +4,6 @@ const http = require('http');
 const https = require('https');
 const url = require('url');
 
-
 /**
  * Executes the specified HTTP request.
  * @param {Object} request - The request object.
@@ -15,7 +14,7 @@ const url = require('url');
  * @returns {Promise.<Object>} A promise which gets resolved, when the request
  * was successful and returns the request response.
  */
-module.exports = function (request) {
+module.exports = function(request) {
     const requestUrl = new url.URL(request.url);
     const client = requestUrl.protocol === 'https:' ? https : http;
     const options = {

@@ -20,7 +20,6 @@ const uuidV4 = require('uuid/v4');
 
 const tableUtils = require('../utils/azure-table');
 
-
 const table = new tableUtils.Table('Users', {
     serialize(obj) {
         return {
@@ -55,12 +54,11 @@ const table = new tableUtils.Table('Users', {
     }
 });
 
-
-exports.generateId = function () {
+exports.generateId = function() {
     return uuidV4();
 };
 
-exports.createOrUpdate = function (user) {
+exports.createOrUpdate = function(user) {
     if (!user.id) {
         user.id = uuidV4();
     }
@@ -68,10 +66,10 @@ exports.createOrUpdate = function (user) {
     return table.insertOrReplace(user).then(() => user);
 };
 
-exports.get = function (id) {
+exports.get = function(id) {
     return table.retrieve(id, id);
 };
 
-exports.delete = function (id) {
+exports.delete = function(id) {
     return table.delete({ id });
 };

@@ -2,14 +2,14 @@
 
 const express = require('express');
 
-const idps = require('./idps/all');
+const idps = require('./idps');
 const stateUtils = require('./utils/state');
-
 
 const router = express.Router(); // eslint-disable-line new-cap
 
-router.get('/', function (req, res, next) {
-    stateUtils.getRequiredState(req.query.state).then(state => {
+router.get('/', async function(req, res, next) {
+    try {
+        const state = await stateUtils.getRequiredState(req.query.state);
         res.render('sts/login', {
             title: 'RESTer - Login',
             idps: Object.values(idps).map(idp => ({
@@ -17,7 +17,9 @@ router.get('/', function (req, res, next) {
                 url: idp.getAuthorizeUrl(state.id)
             }))
         });
-    }, next);
+    } catch (err) {
+        next(err);
+    }
 });
 
 module.exports = router;

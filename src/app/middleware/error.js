@@ -1,6 +1,7 @@
 'use strict';
 
-module.exports = function (err, req, res, next) { // eslint-disable-line no-unused-vars
+/* eslint-disable no-unused-vars */
+module.exports = function(err, req, res, next) {
     const params = {
         code: err.status || 500,
         message: err.message,
