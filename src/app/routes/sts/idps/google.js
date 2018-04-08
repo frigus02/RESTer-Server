@@ -16,6 +16,7 @@ Issuer.discover('https://accounts.google.com').then(googleIssuer => {
         client_id: config.clientId,
         client_secret: config.clientSecret
     });
+    client.CLOCK_TOLERANCE = 5;
 });
 
 exports.name = 'google';

@@ -36,7 +36,7 @@ router.get('/authorize', async function(req, res, next) {
     }
 
     const state = await states.create({ oauth2: oauth2Properties });
-    res.redirect(`/sts/login?state=${state.id}`);
+    res.redirect(`/sts/login?state=${state._id}`);
 });
 
 module.exports = router;

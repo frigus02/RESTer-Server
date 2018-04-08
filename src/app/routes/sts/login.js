@@ -14,7 +14,7 @@ router.get('/', async function(req, res, next) {
             title: 'RESTer - Login',
             idps: Object.values(idps).map(idp => ({
                 name: idp.displayName,
-                url: idp.getAuthorizeUrl(state.id)
+                url: idp.getAuthorizeUrl(state._id)
             }))
         });
     } catch (err) {

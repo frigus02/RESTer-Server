@@ -25,14 +25,11 @@ router.get('/', async function(req, res, next) {
 router.post('/', async function(req, res, next) {
     try {
         const state = await stateUtils.getRequiredState(req.query.state);
-        const userId = users.generateId();
-        const account = {
-            id: state.properties.account.id,
-            idp: state.properties.account.idp,
-            userId
+        const accountProps = {
+            name: state.properties.account.name,
+            idp: state.properties.account.idp
         };
-        const user = {
-            id: userId,
+        const userProps = {
             givenName: req.body.givenName,
             familyName: req.body.familyName,
             displayName: req.body.displayName,
@@ -41,17 +38,19 @@ router.post('/', async function(req, res, next) {
             zip: req.body.zip,
             state: req.body.state,
             country: req.body.country,
-            email: req.body.email,
-            accounts: [account]
+            email: req.body.email
         };
 
         try {
-            await accounts.createOrUpdate(account);
-            await users.createOrUpdate(user);
+            const user = await users.create(userProps);
+            await accounts.create({
+                ...accountProps,
+                userId: user._id
+            });
 
             const redirectUrl = await oauth2Utils.getSuccessRedirectUrl(
                 state.properties.oauth2,
-                userId
+                user._id
             );
             res.redirect(redirectUrl);
         } catch (err) {

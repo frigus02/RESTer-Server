@@ -2,39 +2,38 @@
 
 /**
  * interface Account {
- *     id: String (Unique ID from the IDP, e.g. john.doe@example.com)
+ *     _id: String (uuid)
+ *     name: String (Unique ID from the IDP, e.g. john.doe@example.com)
  *     idp: String (e.g. email, google)
  *     userId: String
  * }
  */
 
-const tableUtils = require('../utils/azure-table');
+const uuidV4 = require('uuid/v4');
 
-const table = new tableUtils.Table('Accounts', {
-    serialize(obj) {
-        return {
-            PartitionKey: obj.idp,
-            RowKey: obj.id.toLowerCase(),
-            UserId: obj.userId
-        };
-    },
-    deserialize(entity) {
-        return {
-            id: entity.RowKey,
-            idp: entity.PartitionKey,
-            userId: entity.UserId
-        };
-    }
-});
+const { withDb } = require('../utils/mongo');
+const collection = 'accounts';
 
-exports.createOrUpdate = function(account) {
-    return table.insertOrReplace(account).then(() => account);
+exports.create = async function(account) {
+    const accountWithId = {
+        ...account,
+        _id: uuidV4()
+    };
+
+    return await withDb(async db => {
+        await db.collection(collection).insert(accountWithId);
+        return accountWithId;
+    });
 };
 
-exports.get = function(idp, id) {
-    return table.retrieve(idp, id);
+exports.get = async function(name, idp) {
+    return await withDb(async db => {
+        return await db.collection(collection).findOne({ name, idp });
+    });
 };
 
-exports.delete = function(idp, id) {
-    return table.delete({ idp, id });
+exports.delete = async function(name, idp) {
+    return await withDb(async db => {
+        return await db.collection(collection).remove({ name, idp });
+    });
 };

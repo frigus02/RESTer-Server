@@ -2,7 +2,7 @@
 
 const express = require('express');
 
-const idps = require('./idps/all');
+const idps = require('./idps');
 const states = require('../../data/sts-states');
 const accounts = require('../../data/accounts');
 const oauth2Utils = require('./utils/oauth2.js');
@@ -51,18 +51,17 @@ router.get('/:idp', async function(req, res, next) {
         try {
             const token = await idp.exchangeCodeIntoToken(code);
             const profile = await idp.getUserProfile(token);
-            const account = await accounts.get(idp.name, profile.id);
+            const account = await accounts.get(profile.id, idp.name);
 
             if (account) {
-                return res.redirect(
-                    oauth2Utils.getSuccessRedirectUrl(
-                        state.properties.oauth2,
-                        account.userId
-                    )
+                const redirectUrl = await oauth2Utils.getSuccessRedirectUrl(
+                    state.properties.oauth2,
+                    account.userId
                 );
+                return res.redirect(redirectUrl);
             } else {
                 state.properties.account = {
-                    id: profile.id,
+                    name: profile.id,
                     idp: idp.name
                 };
                 state.properties.user = {
@@ -74,7 +73,7 @@ router.get('/:idp', async function(req, res, next) {
                 };
 
                 await states.update(state);
-                return res.redirect(`/sts/register?state=${state.id}`);
+                return res.redirect(`/sts/register?state=${state._id}`);
             }
         } catch (err) {
             const redirectUrl = oauth2Utils.getErrorRedirectUrl(

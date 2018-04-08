@@ -13,7 +13,7 @@ module.exports = function(err, req, res, next) {
         res.json(params);
     } else {
         res.render('index', {
-            error: params
+            stateJson: JSON.stringify({ error: params })
         });
     }
 };

@@ -19,7 +19,7 @@
     </script>
 
     <script src="/bower_components/webcomponentsjs/webcomponents-loader.js"></script>
-    #state#
+    <script>const state = {{#if stateJson}}{{{stateJson}}}{{else}}{}{{/if}};</script>
 
     <link rel="import" href="/elements/rester-app.html">
 

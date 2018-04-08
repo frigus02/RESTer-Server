@@ -13,13 +13,14 @@
   "author": "Jan Kuehle <jkuehle90@gmail.com> (https://kuehle.me)",
   "license": "MIT",
   "dependencies": {
-    "azure-storage": "2.8.1",
     "base64url": "2.0.0",
     "body-parser": "1.18.2",
     "bunyan": "1.8.12",
     "bunyan-middleware": "0.8.0",
     "express": "4.16.3",
+    "hbs": "^4.0.1",
     "jsonwebtoken": "8.2.1",
+    "mongodb": "3.0.5",
     "openid-client": "1.20.0",
     "uuid": "3.2.1"
   },
