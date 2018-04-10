@@ -19,13 +19,13 @@ members of a team.
 	docker run --name rester-db -p 27017:27017 -d mongo
 	```
 
-2.	Setup environment variables
+2.	Create a `.env` file containing the following variables
 
 	```posh
-	$env:MONGO_DB_URL = "mongodb://localhost:27017";
-	$env:MONGO_DB_NAME = "rester";
-	$env:RESTER_IDP_GOOGLE_CLIENT_ID = "";
-	$env:RESTER_IDP_GOOGLE_CLIENT_SECRET = "";
+	RESTER_MONGO_DB_URL="mongodb://localhost:27017"
+	RESTER_MONGO_DB_NAME="rester"
+	RESTER_IDP_GOOGLE_CLIENT_ID=""
+	RESTER_IDP_GOOGLE_CLIENT_SECRET=""
 	```
 
 3.	Start server

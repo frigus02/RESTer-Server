@@ -20,6 +20,12 @@ app.use(
 );
 
 app.use(require('./middleware/https-redirect'));
+app.use(
+    require('./middleware/mongo-db')({
+        url: process.env.RESTER_MONGO_DB_URL,
+        dbName: process.env.RESTER_MONGO_DB_NAME
+    })
+);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

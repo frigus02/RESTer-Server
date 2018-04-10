@@ -12,34 +12,35 @@
  *     state: String
  *     country: String
  *     email: String
+ *     accounts: Array<{
+ *         idp: String (e.g. email, google)
+ *         name: String (Unique ID from the IDP, e.g. john.doe@example.com)
+ *     }>
  * }
  */
 
 const uuidV4 = require('uuid/v4');
 
-const { withDb } = require('../utils/mongo');
 const collection = 'users';
 
-exports.create = async function(user) {
+exports.create = async function(db, user) {
     const userWithId = {
         ...user,
         _id: uuidV4()
     };
 
-    return await withDb(async db => {
-        await db.collection(collection).insert(userWithId);
-        return userWithId;
-    });
+    await db.collection(collection).insert(userWithId);
+    return userWithId;
 };
 
-exports.get = async function(_id) {
-    return await withDb(async db => {
-        return await db.collection(collection).findOne({ _id });
-    });
+exports.get = async function(db, _id) {
+    return await db.collection(collection).findOne({ _id });
 };
 
-exports.delete = async function(_id) {
-    return await withDb(async db => {
-        return await db.collection(collection).remove({ _id });
-    });
+exports.getByAccount = async function(db, idp, name) {
+    return await db.collection(collection).findOne({ accounts: { idp, name } });
+};
+
+exports.delete = async function(db, _id) {
+    return await db.collection(collection).remove({ _id });
 };
