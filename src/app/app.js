@@ -3,6 +3,7 @@
 const path = require('path');
 
 const express = require('express');
+const es6Renderer = require('express-es6-template-engine');
 const bunyan = require('bunyan');
 const bunyanMiddleware = require('bunyan-middleware');
 const bodyParser = require('body-parser');
@@ -10,8 +11,9 @@ const bodyParser = require('body-parser');
 const app = express();
 const logger = bunyan.createLogger({ name: 'RESTer' });
 
-app.set('views', path.join(__dirname, '..', 'site'));
-app.set('view engine', 'hbs');
+app.engine('html', es6Renderer);
+app.set('views', path.resolve(__dirname, 'views'));
+app.set('view engine', 'html');
 
 app.use(
     bunyanMiddleware({
@@ -30,7 +32,7 @@ app.use(
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use('/', require('./routes/index'));
+app.use('/', require('./routes'));
 
 app.use(require('./middleware/not-found'));
 app.use(require('./middleware/error'));

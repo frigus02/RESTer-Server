@@ -19,7 +19,7 @@
     "bunyan-middleware": "0.8.0",
     "dotenv": "5.0.1",
     "express": "4.16.3",
-    "hbs": "^4.0.1",
+    "express-es6-template-engine": "2.0.3",
     "jsonwebtoken": "8.2.1",
     "mongodb": "3.0.5",
     "openid-client": "1.20.0",
@@ -31,7 +31,6 @@
     "eslint": "4.19.1",
     "eslint-config-crockford": "2.0.0",
     "eslint-config-prettier": "2.9.0",
-    "eslint-plugin-html": "4.0.2",
     "prettier": "1.11.1"
   },
   "engines": {

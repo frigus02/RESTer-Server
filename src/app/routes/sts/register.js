@@ -3,6 +3,7 @@
 const express = require('express');
 
 const users = require('../../data/users');
+const render = require('../../utils/render');
 const oauth2Utils = require('./utils/oauth2.js');
 const stateUtils = require('./utils/state');
 
@@ -14,7 +15,7 @@ router.get('/', async function(req, res, next) {
         return;
     }
 
-    res.render('sts/register', {
+    render(res, 'sts/register', {
         title: 'RESTer - Register',
         user: state.properties.user,
         account: state.properties.account

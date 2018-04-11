@@ -2,6 +2,7 @@
 
 const express = require('express');
 
+const render = require('../../utils/render');
 const idps = require('./idps');
 const stateUtils = require('./utils/state');
 
@@ -13,7 +14,7 @@ router.get('/', async function(req, res, next) {
         return;
     }
 
-    res.render('sts/login', {
+    render(res, 'sts/login', {
         title: 'RESTer - Login',
         idps: Object.values(idps).map(idp => ({
             name: idp.displayName,
