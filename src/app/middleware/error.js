@@ -9,7 +9,7 @@ module.exports = function(err, req, res, next) {
     };
 
     res.status(params.code);
-    if (req.xhr) {
+    if (req.path.startsWith('/api/')) {
         res.json(params);
     } else {
         res.render('error', params);

@@ -20,6 +20,7 @@
     "dotenv": "5.0.1",
     "express": "4.16.3",
     "express-es6-template-engine": "2.0.3",
+    "express-jwt": "^5.3.1",
     "jsonwebtoken": "8.2.1",
     "mongodb": "3.0.6",
     "openid-client": "2.0.0",

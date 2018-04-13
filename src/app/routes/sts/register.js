@@ -3,7 +3,7 @@
 const express = require('express');
 
 const users = require('../../data/users');
-const oauth2Utils = require('./utils/oauth2.js');
+const oauth2Utils = require('../../lib/oauth2');
 const stateUtils = require('./utils/state');
 
 const router = express.Router(); // eslint-disable-line new-cap

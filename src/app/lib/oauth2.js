@@ -6,9 +6,9 @@ const { promisify } = require('util');
 
 const jwt = require('jsonwebtoken');
 
-const fsReadFile = promisify(fs.readFile);
 const jwtSign = promisify(jwt.sign);
-const certificatePromise = fsReadFile('./src/certificates/oauth2.key');
+const publicKey = fs.readFileSync('./src/certificates/oauth2.crt');
+const privateKey = fs.readFileSync('./src/certificates/oauth2.key');
 
 function getFragmentAccessTokenUrl({
     redirectUri,
@@ -64,6 +64,8 @@ function getQueryErrorUrl({
 
     return errorUrl.toString();
 }
+
+exports.publicKey = publicKey;
 
 exports.validateClient = function(clientId, redirectUri) {
     if (clientId === 'rester' && redirectUri === 'http://localhost:3000') {
@@ -123,8 +125,7 @@ exports.generateAccessToken = async function(userId, clientId) {
         subject: userId
     };
 
-    const certificate = await certificatePromise;
-    const token = await jwtSign(payload, certificate, options);
+    const token = await jwtSign(payload, privateKey, options);
 
     return {
         accessToken: token,

@@ -3,7 +3,7 @@
 const express = require('express');
 
 const states = require('../../data/sts-states');
-const oauth2Utils = require('./utils/oauth2.js');
+const oauth2Utils = require('../../lib/oauth2');
 
 const router = express.Router(); // eslint-disable-line new-cap
 const supportedResponseTypes = ['token'];

@@ -7,11 +7,33 @@
 <h2>Your Account</h2>
 <div id="login">
     <div id="loginError" hidden>
-        <p>Login failed. Reason: <span></span>. Please try again.</p>
+        <p>Login failed. Please try again. Reason:</p>
+        <div></div>
     </div>
     <a href="${loginUrl}">Login to existing account or create new account</a>
 </div>
 <div id="account" hidden>
+    <img id="accountPicture" src="" alt="Profile photo" class="account-photo">
+    <dl class="summary-table">
+        <dt>Given name:</dt>
+        <dd id="accountGivenName"></dd>
+        <dt>Family name:</dt>
+        <dd id="accountFamilyName"></dd>
+        <dt>Display name:</dt>
+        <dd id="accountDisplayName"></dd>
+        <dt>Street:</dt>
+        <dd id="accountStreet"></dd>
+        <dt>City:</dt>
+        <dd id="accountCity"></dd>
+        <dt>ZIP/Postal code:</dt>
+        <dd id="accountZip"></dd>
+        <dt>State/Province:</dt>
+        <dd id="accountState"></dd>
+        <dt>Country:</dt>
+        <dd id="accountCountry"></dd>
+        <dt>Email:</dt>
+        <dd id="accountEmail"></dd>
+    </dl>
 </div>
 
 <script src="/static/scripts/login.js" defer></script>
