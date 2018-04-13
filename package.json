@@ -21,17 +21,17 @@
     "express": "4.16.3",
     "express-es6-template-engine": "2.0.3",
     "jsonwebtoken": "8.2.1",
-    "mongodb": "3.0.5",
-    "openid-client": "1.20.0",
+    "mongodb": "3.0.6",
+    "openid-client": "2.0.0",
     "uuid": "3.2.1"
   },
   "devDependencies": {
-    "babel-eslint": "8.2.2",
+    "babel-eslint": "8.2.3",
     "bower": "1.8.4",
     "eslint": "4.19.1",
     "eslint-config-crockford": "2.0.0",
     "eslint-config-prettier": "2.9.0",
-    "prettier": "1.11.1"
+    "prettier": "1.12.0"
   },
   "engines": {
     "node": ">=9.0.0"

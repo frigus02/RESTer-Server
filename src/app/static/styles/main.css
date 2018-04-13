@@ -68,3 +68,7 @@ body {
 .footer__links li:not(:first-child)::before {
     content: ' - ';
 }
+
+[hidden] {
+    display: none !important;
+}

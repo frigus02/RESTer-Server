@@ -3,5 +3,15 @@
     <a href="https://addons.mozilla.org/firefox/addon/rester">Firefox</a> and
     <a href="https://chrome.google.com/webstore/detail/rester/eejfoncpjfgmeleakejdcanedmefagga">Chrome</a>.</p>
 
+
 <h2>Your Account</h2>
-<a href="${loginUrl}">Login to existing account or create new account</a>
+<div id="login">
+    <div id="login-error" hidden>
+        <p>Login failed. Reason: <span></span>. Please try again.</p>
+    </div>
+    <a href="${loginUrl}">Login to existing account or create new account</a>
+</div>
+<div id="account" hidden>
+</div>
+
+<script src="/static/scripts/login.js" defer></script>
