@@ -12,6 +12,7 @@
  *     state: String
  *     country: String
  *     email: String
+ *     pictureUrl: String
  *     accounts: Array<{
  *         idp: String (e.g. email, google)
  *         name: String (Unique ID from the IDP, e.g. john.doe@example.com)

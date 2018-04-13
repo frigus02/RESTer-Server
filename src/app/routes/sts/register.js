@@ -37,6 +37,7 @@ router.post('/', async function(req, res, next) {
         state: req.body.state,
         country: req.body.country,
         email: req.body.email,
+        pictureUrl: req.body.pictureUrl,
         accounts: [
             {
                 idp: state.properties.account.idp,
