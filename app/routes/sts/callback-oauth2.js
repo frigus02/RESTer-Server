@@ -4,7 +4,8 @@ const express = require('express');
 
 const states = require('../../data/sts-states');
 const users = require('../../data/users');
-const oauth2Utils = require('../../lib/oauth2');
+const oauth2 = require('../../lib/oauth2');
+const oauth2Utils = require('./utils/oauth2');
 const stateUtils = require('./utils/state');
 
 const router = express.Router(); // eslint-disable-line new-cap
@@ -28,7 +29,7 @@ router.get('/:idp', async function(req, res, next) {
 
     if (req.query.error) {
         return res.redirect(
-            oauth2Utils.getErrorRedirectUrl(
+            oauth2.getErrorRedirectUrl(
                 state.properties.oauth2,
                 'server_error',
                 `The selected IDP ${idp.name} responsed with the error ${
@@ -41,7 +42,7 @@ router.get('/:idp', async function(req, res, next) {
     const code = req.query.code;
     if (!code) {
         return res.redirect(
-            oauth2Utils.getErrorRedirectUrl(
+            oauth2.getErrorRedirectUrl(
                 state.properties.oauth2,
                 'server_error',
                 `The selected IDP ${idp.name} did not return a code.`
@@ -50,12 +51,15 @@ router.get('/:idp', async function(req, res, next) {
     }
 
     try {
-        const token = await idp.exchangeCodeIntoToken(code);
+        const token = await idp.exchangeCodeIntoToken(
+            oauth2Utils.getCallbackUrl(req, idp),
+            code
+        );
         const profile = await idp.getUserProfile(token);
         const user = await users.getByAccount(req.$.db, idp.name, profile.id);
 
         if (user) {
-            const redirectUrl = await oauth2Utils.getSuccessRedirectUrl(
+            const redirectUrl = await oauth2.getSuccessRedirectUrl(
                 state.properties.oauth2,
                 user._id
             );
@@ -77,7 +81,7 @@ router.get('/:idp', async function(req, res, next) {
             return res.redirect(`/sts/register?state=${state._id}`);
         }
     } catch (err) {
-        const redirectUrl = oauth2Utils.getErrorRedirectUrl(
+        const redirectUrl = oauth2.getErrorRedirectUrl(
             state.properties.oauth2,
             'server_error',
             `Failed to retrieve user profile from IDP ${idp.name}: ${

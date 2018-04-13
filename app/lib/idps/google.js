@@ -15,13 +15,12 @@ module.exports = async function({ clientId, clientSecret }) {
         token_endpoint_auth_method: 'client_secret_post'
     });
     client.CLOCK_TOLERANCE = 5;
-    const redirectUri = 'http://localhost:3000/sts/callback/oauth2/google';
 
     return {
         name: 'google',
         displayName: 'Google',
 
-        getAuthorizeUrl(state) {
+        getAuthorizeUrl(redirectUri, state) {
             return client.authorizationUrl({
                 redirect_uri: redirectUri,
                 scope: 'openid email profile',
@@ -30,7 +29,7 @@ module.exports = async function({ clientId, clientSecret }) {
             });
         },
 
-        async exchangeCodeIntoToken(code) {
+        async exchangeCodeIntoToken(redirectUri, code) {
             const tokenSet = await client.authorizationCallback(redirectUri, {
                 code
             });

@@ -21,11 +21,18 @@ members of a team.
 
 2.	Create a `.env` file containing the following variables
 
-	```posh
+	```sh
 	RESTER_MONGO_DB_URL="mongodb://localhost:27017"
 	RESTER_MONGO_DB_NAME="rester"
 	RESTER_IDP_GOOGLE_CLIENT_ID=""
 	RESTER_IDP_GOOGLE_CLIENT_SECRET=""
+	```
+
+	Optional environment variables:
+
+	```sh
+	PORT=3000
+	RESTER_ENABLE_TRUST_PROXY=1
 	```
 
 3.	Start server

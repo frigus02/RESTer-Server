@@ -2,6 +2,7 @@
 
 const express = require('express');
 
+const oauth2Utils = require('./utils/oauth2');
 const stateUtils = require('./utils/state');
 
 const router = express.Router(); // eslint-disable-line new-cap
@@ -16,7 +17,10 @@ router.get('/', async function(req, res, next) {
         title: 'RESTer - Login',
         idps: Object.values(req.$.idps).map(idp => ({
             name: idp.displayName,
-            url: idp.getAuthorizeUrl(state._id)
+            url: idp.getAuthorizeUrl(
+                oauth2Utils.getCallbackUrl(req, idp),
+                state._id
+            )
         }))
     });
 });

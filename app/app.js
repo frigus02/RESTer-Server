@@ -12,6 +12,8 @@ module.exports = async function() {
     const app = express();
     const logger = bunyan.createLogger({ name: 'RESTer' });
 
+    app.set('trust proxy', !!process.env.RESTER_ENABLE_TRUST_PROXY);
+
     app.engine('html', es6Renderer);
     app.set('views', path.resolve(__dirname, 'views'));
     app.set('view engine', 'html');
