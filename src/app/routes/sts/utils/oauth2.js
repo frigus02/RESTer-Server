@@ -66,7 +66,7 @@ function getQueryErrorUrl({
 }
 
 exports.validateClient = function(clientId, redirectUri) {
-    if (clientId === 'rester' && redirectUri === 'http://localhost:3000/test') {
+    if (clientId === 'rester' && redirectUri === 'http://localhost:3000') {
         return true;
     }
 

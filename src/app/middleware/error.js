@@ -1,7 +1,5 @@
 'use strict';
 
-const render = require('../utils/render');
-
 /* eslint-disable no-unused-vars */
 module.exports = function(err, req, res, next) {
     const params = {
@@ -14,6 +12,6 @@ module.exports = function(err, req, res, next) {
     if (req.xhr) {
         res.json(params);
     } else {
-        render(res, 'error', params);
+        res.render('error', params);
     }
 };

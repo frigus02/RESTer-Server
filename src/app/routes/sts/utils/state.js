@@ -10,7 +10,7 @@ exports.getRequiredState = async function(req, next) {
         return;
     }
 
-    const state = await states.get(req.db, req.query.state);
+    const state = await states.get(req.$.db, req.query.state);
 
     if (state) {
         return state;

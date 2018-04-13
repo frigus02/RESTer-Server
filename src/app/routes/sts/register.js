@@ -3,7 +3,6 @@
 const express = require('express');
 
 const users = require('../../data/users');
-const render = require('../../utils/render');
 const oauth2Utils = require('./utils/oauth2.js');
 const stateUtils = require('./utils/state');
 
@@ -15,7 +14,7 @@ router.get('/', async function(req, res, next) {
         return;
     }
 
-    render(res, 'sts/register', {
+    res.render('sts/register', {
         title: 'RESTer - Register',
         user: state.properties.user,
         account: state.properties.account
@@ -47,7 +46,7 @@ router.post('/', async function(req, res, next) {
     };
 
     try {
-        const user = await users.create(req.db, userProps);
+        const user = await users.create(req.$.db, userProps);
 
         const redirectUrl = await oauth2Utils.getSuccessRedirectUrl(
             state.properties.oauth2,

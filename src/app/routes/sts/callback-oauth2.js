@@ -2,7 +2,6 @@
 
 const express = require('express');
 
-const idps = require('./idps');
 const states = require('../../data/sts-states');
 const users = require('../../data/users');
 const oauth2Utils = require('./utils/oauth2.js');
@@ -11,12 +10,12 @@ const stateUtils = require('./utils/state');
 const router = express.Router(); // eslint-disable-line new-cap
 
 router.get('/:idp', async function(req, res, next) {
-    const idp = idps[req.params.idp];
+    const idp = req.$.idps[req.params.idp];
     if (!idp) {
         const err = new Error(
             `Invalid identity provider: ${
                 req.params.idp
-            }. Supported are: ${Object.keys(idps).join(', ')}.`
+            }. Supported are: ${Object.keys(req.$.idps).join(', ')}.`
         );
         err.code = 404;
         return next(err);
@@ -53,7 +52,7 @@ router.get('/:idp', async function(req, res, next) {
     try {
         const token = await idp.exchangeCodeIntoToken(code);
         const profile = await idp.getUserProfile(token);
-        const user = await users.getByAccount(req.db, idp.name, profile.id);
+        const user = await users.getByAccount(req.$.db, idp.name, profile.id);
 
         if (user) {
             const redirectUrl = await oauth2Utils.getSuccessRedirectUrl(
@@ -74,7 +73,7 @@ router.get('/:idp', async function(req, res, next) {
                 pictureUrl: profile.pictureUrl
             };
 
-            await states.update(req.db, state);
+            await states.update(req.$.db, state);
             return res.redirect(`/sts/register?state=${state._id}`);
         }
     } catch (err) {
