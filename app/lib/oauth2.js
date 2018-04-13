@@ -7,8 +7,8 @@ const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
 
 const jwtSign = promisify(jwt.sign);
-const publicKey = fs.readFileSync('./src/certificates/oauth2.crt');
-const privateKey = fs.readFileSync('./src/certificates/oauth2.key');
+const publicKey = fs.readFileSync('./certificates/oauth2.crt');
+const privateKey = fs.readFileSync('./certificates/oauth2.key');
 
 function getFragmentAccessTokenUrl({
     redirectUri,

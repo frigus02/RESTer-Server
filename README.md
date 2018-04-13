@@ -33,3 +33,17 @@ members of a team.
 	```sh
 	yarn start
 	```
+
+## Build Docker image
+
+1.  Build it
+
+	```sh
+	docker build -t frigus02/rester-server .
+	```
+
+2.  Test it
+
+	```sh
+	docker run --name rester --rm -p 3000:80 --link rester-db -e "RESTER_MONGO_DB_URL=mongodb://rester-db:27017" -e "RESTER_MONGO_DB_NAME=rester" -e "RESTER_IDP_GOOGLE_CLIENT_ID=" -e "RESTER_IDP_GOOGLE_CLIENT_SECRET=" frigus02/rester-server
+	```

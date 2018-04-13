@@ -4,11 +4,10 @@
   "private": true,
   "description": "Server part for the RESTer http client browser extension.",
   "scripts": {
-    "start": "node ./src/bin/www | bunyan",
-    "postinstall": "bower install",
+    "start": "node ./bin/www | bunyan",
     "lint": "yarn lint:eslint && yarn lint:prettier",
-    "lint:eslint": "eslint src",
-    "lint:prettier": "prettier -l src/**/*.js !**/bower_components/**"
+    "lint:eslint": "eslint app",
+    "lint:prettier": "prettier -l app/**/*.js"
   },
   "author": "Jan Kuehle <jkuehle90@gmail.com> (https://kuehle.me)",
   "license": "MIT",
