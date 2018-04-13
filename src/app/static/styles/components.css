@@ -1,0 +1,14 @@
+.summary-table {
+    display: grid;
+    grid-template: auto / auto 1fr;
+    grid-gap: 0.2em;
+}
+
+.summary-table dt {
+    grid-column: 1 / 1;
+}
+
+.summary-table dd {
+    grid-column: 2 / 2;
+    margin: 0;
+}

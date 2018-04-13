@@ -4,8 +4,10 @@
     const sectionLogin = document.getElementById('login');
     const sectionLoginError = document.getElementById('loginError');
     const sectionAccount = document.getElementById('account');
+    const accountLogout = document.getElementById('accountLogout');
 
     handleLoginResult();
+    accountLogout.addEventListener('click', logout);
 
     function handleLoginResult() {
         const loginResult = window.location.hash;
@@ -55,5 +57,11 @@
         document.getElementById('accountState').textContent = user.state;
         document.getElementById('accountCountry').textContent = user.country;
         document.getElementById('accountEmail').textContent = user.email;
+    }
+
+    function logout() {
+        window.sessionStorage.removeItem('token');
+        sectionLogin.hidden = false;
+        sectionAccount.hidden = true;
     }
 })();
