@@ -1,0 +1,38 @@
+input {
+    background-color: var(--primary-background-color);
+    font-family: 'Roboto', 'Noto', sans-serif;
+    font-size: 1em;
+}
+
+input:focus {
+    background-color: var(--primary-background-color);
+}
+
+.form-field {
+    margin-bottom: 1em;
+}
+
+.form-field label {
+    display: block;
+    margin-bottom: 0.3em;
+}
+
+.form-field input[type='email'],
+.form-field input[type='text'] {
+    width: 300px;
+    max-width: 100%;
+    border: 1px solid var(--divider-color);
+    padding: 0.5em;
+}
+
+input[type='submit'] {
+    padding: 0.5em;
+    border: none;
+    border-bottom: 2px solid var(--divider-color);
+    background-color: var(--primary-color);
+}
+
+input[type='submit']:focus,
+input[type='submit']:hover {
+    background-color: var(--dark-primary-color);
+}

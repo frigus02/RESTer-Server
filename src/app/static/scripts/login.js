@@ -2,7 +2,7 @@
     'use strict';
 
     const sectionLogin = document.getElementById('login');
-    const sectionLoginError = document.getElementById('login-error');
+    const sectionLoginError = document.getElementById('loginError');
     const sectionAccount = document.getElementById('account');
 
     const loginResult = window.location.hash;

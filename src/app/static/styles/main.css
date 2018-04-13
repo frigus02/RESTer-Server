@@ -3,7 +3,7 @@
     --primary-background-color: #ffffff;
     --secondary-text-color: #737373;
     --disabled-text-color: #9b9b9b;
-    --divider-color: #dbdbdb;
+    --divider-color: #9b9b9b;
     --error-color: #dd2c00;
 
     --primary-color: #00bcd4;
@@ -43,6 +43,11 @@ body {
     grid-area: 1 / 4 / 1 / -4;
 }
 
+.header__title a {
+    color: var(--primary-text-color);
+    text-decoration: none;
+}
+
 .main {
     grid-area: 2 / 4 / 2 / -4;
 }
@@ -67,6 +72,11 @@ body {
 
 .footer__links li:not(:first-child)::before {
     content: ' - ';
+}
+
+*:focus {
+    outline: 3px solid var(--dark-accent-color);
+    background-color: var(--dark-accent-color);
 }
 
 [hidden] {
