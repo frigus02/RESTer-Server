@@ -7,7 +7,12 @@ const oauth2 = require('../../lib/oauth2');
 
 const router = express.Router(); // eslint-disable-line new-cap
 
-router.use(jwt({ secret: oauth2.publicKey }));
+router.use(
+    jwt({
+        secret: oauth2.publicKey,
+        issuer: 'https://rester.kuehle.me'
+    })
+);
 
 router.use('/userinfo', require('./userinfo'));
 

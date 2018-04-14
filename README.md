@@ -7,50 +7,66 @@ members of a team.
 
 ## Develop
 
-1.	Install dependencies
+1.  Install dependencies
 
-	```sh
-	yarn install
-	```
+    ```sh
+    yarn install
+    ```
 
 2.  Start local MongoDB
 
-	```sh
-	docker run --name rester-db -p 27017:27017 -d mongo
-	```
+    ```sh
+    docker run --name rester-db -p 27017:27017 -d mongo
+    ```
 
-2.	Create a `.env` file containing the following variables
+3.  Generate a certificate for signing the JWTs
 
-	```sh
-	RESTER_MONGO_DB_URL="mongodb://localhost:27017"
-	RESTER_MONGO_DB_NAME="rester"
-	RESTER_IDP_GOOGLE_CLIENT_ID=""
-	RESTER_IDP_GOOGLE_CLIENT_SECRET=""
-	```
+    ```sh
+    openssl req \
+        -x509 \
+        -newkey rsa:2048 \
+        -keyout new-oauth-cert.key \
+        -out new-oauth-cert.crt \
+        -days 9125 \
+        -nodes \
+        -subj "/O=RESTer/CN=rester.my-server.tld"
+	node ./tools/env-from-certs.js
+    ```
 
-	Optional environment variables:
+4.  Create a `.env` file containing the following variables
 
-	```sh
-	PORT=3000
-	RESTER_ENABLE_TRUST_PROXY=1
-	```
+    ```sh
+    RESTER_MONGO_DB_URL="mongodb://localhost:27017"
+    RESTER_MONGO_DB_NAME="rester"
+    RESTER_OAUTH2_PRIVATE_KEY=""
+    RESTER_OAUTH2_PUBLIC_KEY=""
+    RESTER_IDP_GOOGLE_CLIENT_ID=""
+    RESTER_IDP_GOOGLE_CLIENT_SECRET=""
+    ```
 
-3.	Start server
+    Optional environment variables:
 
-	```sh
-	yarn start
-	```
+    ```sh
+    PORT=3000
+    RESTER_ENABLE_TRUST_PROXY=1
+    ```
+
+5.  Start server
+
+    ```sh
+    yarn start
+    ```
 
 ## Build Docker image
 
 1.  Build it
 
-	```sh
-	docker build -t frigus02/rester-server .
-	```
+    ```sh
+    docker build -t frigus02/rester-server .
+    ```
 
 2.  Test it
 
-	```sh
-	docker run --name rester --rm -p 3000:80 --link rester-db -e "RESTER_MONGO_DB_URL=mongodb://rester-db:27017" -e "RESTER_MONGO_DB_NAME=rester" -e "RESTER_IDP_GOOGLE_CLIENT_ID=" -e "RESTER_IDP_GOOGLE_CLIENT_SECRET=" frigus02/rester-server
-	```
+    ```sh
+    docker run --name rester --rm -p 3000:80 --link rester-db -e "RESTER_MONGO_DB_URL=mongodb://rester-db:27017" -e "RESTER_MONGO_DB_NAME=rester" -e "RESTER_IDP_GOOGLE_CLIENT_ID=" -e "RESTER_IDP_GOOGLE_CLIENT_SECRET=" frigus02/rester-server
+    ```

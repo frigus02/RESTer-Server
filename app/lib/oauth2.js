@@ -1,14 +1,13 @@
 'use strict';
 
-const fs = require('fs');
 const url = require('url');
 const { promisify } = require('util');
 
 const jwt = require('jsonwebtoken');
 
 const jwtSign = promisify(jwt.sign);
-const publicKey = fs.readFileSync('./certificates/oauth2.crt');
-const privateKey = fs.readFileSync('./certificates/oauth2.key');
+const publicKey = process.env.RESTER_OAUTH2_PUBLIC_KEY;
+const privateKey = process.env.RESTER_OAUTH2_PRIVATE_KEY;
 
 function getFragmentAccessTokenUrl({
     redirectUri,
@@ -108,7 +107,7 @@ exports.generateAccessToken = async function(userId, clientId) {
         expiresIn: '1d',
         notBefore: 0,
         audience: clientId,
-        issuer: 'https://rester.com',
+        issuer: 'https://rester.kuehle.me',
         subject: userId
     };
 
