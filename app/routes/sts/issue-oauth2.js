@@ -3,7 +3,8 @@
 const express = require('express');
 
 const states = require('../../data/sts-states');
-const oauth2Utils = require('../../lib/oauth2');
+const oauth2 = require('../../lib/oauth2');
+const oauth2Utils = require('./utils/oauth2');
 
 const router = express.Router(); // eslint-disable-line new-cap
 const supportedResponseTypes = ['token'];
@@ -11,7 +12,7 @@ const supportedResponseTypes = ['token'];
 router.get('/authorize', async function(req, res, next) {
     const clientId = req.query.client_id;
     const redirectUri = req.query.redirect_uri;
-    if (!oauth2Utils.validateClient(clientId, redirectUri)) {
+    if (!oauth2Utils.validateClient(req, clientId, redirectUri)) {
         const error = new Error(`Invalid client_id or redirect_uri.`);
         error.status = 400;
         return next(error);
@@ -28,7 +29,7 @@ router.get('/authorize', async function(req, res, next) {
 
     if (!supportedResponseTypes.includes(responseType)) {
         return res.redirect(
-            oauth2Utils.getErrorRedirectUrl(
+            oauth2.getErrorRedirectUrl(
                 oauth2Properties,
                 'unsupported_response_type'
             )

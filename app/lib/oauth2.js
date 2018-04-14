@@ -67,34 +67,21 @@ function getQueryErrorUrl({
 
 exports.publicKey = publicKey;
 
-exports.validateClient = function(clientId, redirectUri) {
-    if (clientId === 'rester' && redirectUri === 'http://localhost:3000') {
-        return true;
-    }
-
-    return false;
-};
-
 exports.getErrorRedirectUrl = function(
     oauth2Properties,
     error,
     errorDescription
 ) {
-    if (oauth2Properties.responseType === 'token') {
-        return getFragmentErrorUrl({
-            redirectUri: oauth2Properties.redirectUri,
-            error,
-            errorDescription,
-            state: oauth2Properties.state
-        });
-    } else {
-        return getQueryErrorUrl({
-            redirectUri: oauth2Properties.redirectUri,
-            error,
-            errorDescription,
-            state: oauth2Properties.state
-        });
-    }
+    const errorUrlFunc =
+        oauth2Properties.responseType === 'token'
+            ? getFragmentErrorUrl
+            : getQueryErrorUrl;
+    return errorUrlFunc({
+        redirectUri: oauth2Properties.redirectUri,
+        error,
+        errorDescription,
+        state: oauth2Properties.state
+    });
 };
 
 exports.getSuccessRedirectUrl = async function(oauth2Properties, userId) {
