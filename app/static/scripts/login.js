@@ -55,7 +55,7 @@
 
     async function loadUserProfile() {
         const token = window.sessionStorage.getItem('token');
-        const res = await fetch('/api/userinfo', {
+        const res = await fetch('/api/v1/userinfo', {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -108,7 +108,7 @@
         }, {});
 
         const token = window.sessionStorage.getItem('token');
-        await fetch('/api/userinfo', {
+        await fetch('/api/v1/userinfo', {
             method: 'PUT',
             headers: {
                 Authorization: `Bearer ${token}`,

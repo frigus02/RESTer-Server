@@ -14,6 +14,6 @@ router.use(
     })
 );
 
-router.use('/userinfo', require('./userinfo'));
+router.use('/v1/userinfo', require('./userinfo'));
 
 module.exports = router;
