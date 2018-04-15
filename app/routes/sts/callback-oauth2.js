@@ -56,7 +56,14 @@ router.get('/:idp', async function(req, res, next) {
             code
         );
         const profile = await idp.getUserProfile(token);
-        const user = await users.getByAccount(req.$.db, idp.name, profile.id);
+        const user = await users.getByAccount(
+            req.$.db,
+            {
+                idp: idp.name,
+                name: profile.id
+            },
+            users.projection.id
+        );
 
         if (user) {
             const redirectUrl = await oauth2.getSuccessRedirectUrl(

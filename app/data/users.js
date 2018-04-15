@@ -24,6 +24,16 @@ const uuidV4 = require('uuid/v4');
 
 const collection = 'users';
 
+exports.projection = {
+    id: {
+        _id: 1
+    },
+    user: {
+        _id: 0,
+        accounts: 0
+    }
+};
+
 exports.create = async function(db, user) {
     const userWithId = {
         ...user,
@@ -34,12 +44,14 @@ exports.create = async function(db, user) {
     return userWithId;
 };
 
-exports.get = async function(db, _id) {
-    return await db.collection(collection).findOne({ _id });
+exports.get = async function(db, _id, projection) {
+    return await db.collection(collection).findOne({ _id }, { projection });
 };
 
-exports.getByAccount = async function(db, idp, name) {
-    return await db.collection(collection).findOne({ accounts: { idp, name } });
+exports.getByAccount = async function(db, account, projection) {
+    return await db
+        .collection(collection)
+        .findOne({ accounts: account }, { projection });
 };
 
 exports.delete = async function(db, _id) {
