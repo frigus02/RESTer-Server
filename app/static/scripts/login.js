@@ -50,6 +50,7 @@
             sectionLogin.hidden = true;
             sectionAccount.hidden = false;
             loadUserProfile();
+            loadConnectedApplications();
         }
     }
 
@@ -75,6 +76,35 @@
         document.getElementById('accountState').textContent = user.state;
         document.getElementById('accountCountry').textContent = user.country;
         document.getElementById('accountEmail').textContent = user.email;
+    }
+
+    async function loadConnectedApplications() {
+        const token = window.sessionStorage.getItem('token');
+        const res = await fetch('/api/v1/tokens', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        const apps = await res.json();
+
+        const list = document.getElementById('applications');
+        for (const app of apps) {
+            const item = document.createElement('li');
+            item.textContent = app.application;
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Revoke access';
+            deleteButton.addEventListener('click', async () => {
+                await fetch(`/api/v1/tokens/${app.id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                item.remove();
+            });
+            item.appendChild(deleteButton);
+            list.appendChild(item);
+        }
     }
 
     function editAccount() {

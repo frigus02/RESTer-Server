@@ -14,6 +14,7 @@ router.use(
     })
 );
 
+router.use('/v1/tokens', require('./tokens'));
 router.use('/v1/userinfo', require('./userinfo'));
 
 module.exports = router;

@@ -37,7 +37,3 @@ exports.update = async function(db, state) {
         .collection(collection)
         .update({ _id: state._id }, { $set: { properties: state.properties } });
 };
-
-exports.delete = async function(db, _id) {
-    return await db.collection(collection).remove({ _id });
-};

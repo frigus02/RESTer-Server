@@ -67,6 +67,7 @@ router.get('/:idp', async function(req, res, next) {
 
         if (user) {
             const redirectUrl = await oauth2.getSuccessRedirectUrl(
+                req.$.db,
                 state.properties.oauth2,
                 user._id
             );

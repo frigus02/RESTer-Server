@@ -50,6 +50,7 @@ router.post('/', async function(req, res, next) {
         const user = await users.create(req.$.db, userProps);
 
         const redirectUrl = await oauth2Utils.getSuccessRedirectUrl(
+            req.$.db,
             state.properties.oauth2,
             user._id
         );

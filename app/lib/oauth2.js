@@ -5,6 +5,8 @@ const { promisify } = require('util');
 
 const jwt = require('jsonwebtoken');
 
+const codes = require('../data/sts-oauth2-codes');
+
 const jwtSign = promisify(jwt.sign);
 const publicKey = process.env.RESTER_OAUTH2_PUBLIC_KEY;
 const privateKey = process.env.RESTER_OAUTH2_PRIVATE_KEY;
@@ -22,10 +24,10 @@ function getFragmentAccessTokenUrl({
     expiresIn && params.set('expires_in', expiresIn);
     state && params.set('state', state);
 
-    const errorUrl = new url.URL(redirectUri);
-    errorUrl.hash = params.toString();
+    const tokenUrl = new url.URL(redirectUri);
+    tokenUrl.hash = params.toString();
 
-    return errorUrl.toString();
+    return tokenUrl.toString();
 }
 
 function getFragmentErrorUrl({
@@ -47,6 +49,14 @@ function getFragmentErrorUrl({
     return errorUrl.toString();
 }
 
+function getQueryAuthorizationCodeUrl({ redirectUri, code, state }) {
+    const codeUrl = new url.URL(redirectUri);
+    codeUrl.searchParams.set('code', code);
+    state && codeUrl.searchParams.set('state', state);
+
+    return codeUrl.toString();
+}
+
 function getQueryErrorUrl({
     redirectUri,
     error,
@@ -65,6 +75,7 @@ function getQueryErrorUrl({
 }
 
 exports.publicKey = publicKey;
+exports.tokenType = 'urn:ietf:params:oauth:token-type:jwt';
 
 exports.getErrorRedirectUrl = function(
     oauth2Properties,
@@ -83,8 +94,21 @@ exports.getErrorRedirectUrl = function(
     });
 };
 
-exports.getSuccessRedirectUrl = async function(oauth2Properties, userId) {
-    if (oauth2Properties.responseType === 'token') {
+exports.getSuccessRedirectUrl = async function(db, oauth2Properties, userId) {
+    if (oauth2Properties.responseType === 'code') {
+        const code = await codes.create(
+            db,
+            oauth2Properties.clientId,
+            oauth2Properties.redirectUri,
+            userId
+        );
+
+        return getQueryAuthorizationCodeUrl({
+            redirectUri: oauth2Properties.redirectUri,
+            code: code._id,
+            state: oauth2Properties.state
+        });
+    } else if (oauth2Properties.responseType === 'token') {
         const { accessToken, expiresIn } = await exports.generateAccessToken(
             userId,
             oauth2Properties.clientId
@@ -93,7 +117,7 @@ exports.getSuccessRedirectUrl = async function(oauth2Properties, userId) {
         return getFragmentAccessTokenUrl({
             redirectUri: oauth2Properties.redirectUri,
             accessToken,
-            tokenType: 'urn:ietf:params:oauth:token-type:jwt',
+            tokenType: exports.tokenType,
             expiresIn,
             state: oauth2Properties.state
         });

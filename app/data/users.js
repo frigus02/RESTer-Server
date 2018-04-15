@@ -81,7 +81,3 @@ exports.update = async function(db, _id, userData) {
         .collection(collection)
         .updateOne({ _id }, { $set: validateUpdateData(userData) });
 };
-
-exports.delete = async function(db, _id) {
-    return await db.collection(collection).remove({ _id });
-};
