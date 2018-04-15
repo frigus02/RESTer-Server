@@ -2,7 +2,6 @@
 <form action="" method="POST">
     <h3>Profile</h3>
     <img src="${user.pictureUrl}" alt="Profile photo" class="register-photo">
-    <input type="hidden" name="pictureUrl" value="${user.pictureUrl}">
     <div class="form-field">
         <label for="givenName">Given name:</label>
         <input type="text" id="givenName" name="givenName" value="${user.givenName || ''}">
