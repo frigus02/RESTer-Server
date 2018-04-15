@@ -11,4 +11,9 @@ router.get('/', async function(req, res) {
     res.json(user);
 });
 
+router.put('/', async function(req, res) {
+    await users.update(req.$.db, req.user.sub, req.body);
+    res.send(200);
+});
+
 module.exports = router;

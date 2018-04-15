@@ -2,3 +2,7 @@
 .account-photo {
     float: right;
 }
+
+.account-logout {
+    margin-top: 1em;
+}

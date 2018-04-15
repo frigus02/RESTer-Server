@@ -4,10 +4,27 @@
     const sectionLogin = document.getElementById('login');
     const sectionLoginError = document.getElementById('loginError');
     const sectionAccount = document.getElementById('account');
+    const sectionAccountInfo = document.getElementById('accountInfo');
+    const sectionAccountForm = document.getElementById('accountForm');
+    const accountEdit = document.getElementById('accountEdit');
     const accountLogout = document.getElementById('accountLogout');
 
+    const accountFormFields = {
+        givenName: 'GivenName',
+        familyName: 'FamilyName',
+        displayName: 'DisplayName',
+        street: 'Street',
+        city: 'City',
+        zip: 'Zip',
+        state: 'State',
+        country: 'Country'
+    };
+
     handleLoginResult();
+    accountEdit.addEventListener('click', editAccount);
     accountLogout.addEventListener('click', logout);
+    sectionAccountForm.addEventListener('reset', cancelAccountForm);
+    sectionAccountForm.addEventListener('submit', submitAccountForm);
 
     function handleLoginResult() {
         const loginResult = window.location.hash;
@@ -32,11 +49,12 @@
         if (token) {
             sectionLogin.hidden = true;
             sectionAccount.hidden = false;
-            loadUserProfile(token);
+            loadUserProfile();
         }
     }
 
-    async function loadUserProfile(token) {
+    async function loadUserProfile() {
+        const token = window.sessionStorage.getItem('token');
         const res = await fetch('/api/userinfo', {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -59,9 +77,59 @@
         document.getElementById('accountEmail').textContent = user.email;
     }
 
+    function editAccount() {
+        for (const field of Object.values(accountFormFields)) {
+            const value = document.getElementById(`account${field}`)
+                .textContent;
+            document.getElementById(`accountForm${field}`).value = value;
+        }
+
+        sectionAccountInfo.hidden = true;
+        sectionAccountForm.hidden = false;
+
+        sectionAccountForm.querySelector('input').focus();
+    }
+
+    function cancelAccountForm(e) {
+        e.preventDefault();
+        sectionAccountInfo.hidden = false;
+        sectionAccountForm.hidden = true;
+
+        accountEdit.focus();
+    }
+
+    async function submitAccountForm(e) {
+        e.preventDefault();
+
+        const data = Object.keys(accountFormFields).reduce((data, key) => {
+            const field = accountFormFields[key];
+            data[key] = document.getElementById(`accountForm${field}`).value;
+            return data;
+        }, {});
+
+        const token = window.sessionStorage.getItem('token');
+        await fetch('/api/userinfo', {
+            method: 'PUT',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        await loadUserProfile();
+
+        sectionAccountInfo.hidden = false;
+        sectionAccountForm.hidden = true;
+
+        accountEdit.focus();
+    }
+
     function logout() {
         window.sessionStorage.removeItem('token');
         sectionLogin.hidden = false;
         sectionAccount.hidden = true;
+
+        sectionLogin.querySelector('a').focus();
     }
 })();

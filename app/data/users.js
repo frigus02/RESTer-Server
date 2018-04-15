@@ -34,6 +34,28 @@ exports.projection = {
     }
 };
 
+function validateUpdateData(data) {
+    const validFields = [
+        'givenName',
+        'familyName',
+        'displayName',
+        'street',
+        'city',
+        'zip',
+        'state',
+        'country',
+        'pictureUrl'
+    ];
+
+    return validFields.reduce((validData, key) => {
+        if (data.hasOwnProperty(key)) {
+            validData[key] = data[key];
+        }
+
+        return validData;
+    }, {});
+}
+
 exports.create = async function(db, user) {
     const userWithId = {
         ...user,
@@ -52,6 +74,12 @@ exports.getByAccount = async function(db, account, projection) {
     return await db
         .collection(collection)
         .findOne({ accounts: account }, { projection });
+};
+
+exports.update = async function(db, _id, userData) {
+    return await db
+        .collection(collection)
+        .updateOne({ _id }, { $set: validateUpdateData(userData) });
 };
 
 exports.delete = async function(db, _id) {
