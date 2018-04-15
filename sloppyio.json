@@ -1,0 +1,61 @@
+{
+    "project": "rester-server",
+    "services": [
+        {
+            "id": "frontend",
+            "apps": [
+                {
+                    "id": "site",
+                    "domain": {
+                        "uri": "rester-server.sloppy.zone"
+                    },
+                    "mem": 256,
+                    "image": "frigus02/rester-server",
+                    "instances": 1,
+                    "port_mappings": [
+                        {
+                            "container_port": 80
+                        }
+                    ],
+                    "env": {
+                        "RESTER_MONGO_DB_URL":
+                            "mongodb://mongodb.backend.rester-server",
+                        "RESTER_MONGO_DB_NAME": "rester",
+                        "RESTER_OAUTH2_PRIVATE_KEY": "$oauthPrivateKey",
+                        "RESTER_OAUTH2_PUBLIC_KEY": "$oauthPublicKey",
+                        "RESTER_IDP_GOOGLE_CLIENT_ID": "$googleClientId",
+                        "RESTER_IDP_GOOGLE_CLIENT_SECRET":
+                            "$googleClientSecret",
+                        "RESTER_ENABLE_TRUST_PROXY": "1"
+                    },
+                    "dependencies": ["../backend/mongodb"]
+                }
+            ]
+        },
+        {
+            "id": "backend",
+            "apps": [
+                {
+                    "id": "mongodb",
+                    "mem": 256,
+                    "image": "mongo",
+                    "volumes": [
+                        {
+                            "container_path": "/data/db",
+                            "size": "8GB"
+                        },
+                        {
+                            "container_path": "/data/configdb",
+                            "size": "8GB"
+                        }
+                    ],
+                    "port_mappings": [
+                        {
+                            "container_port": 27017
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
