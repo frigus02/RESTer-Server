@@ -7,35 +7,35 @@ members of a team.
 
 ## Develop
 
-1.  Start local MongoDB
+### Initial setup
+
+1.  Generate a certificate for signing the JWTs
 
     ```sh
-    docker run --name rester-db -p 27017:27017 -d mongo
-    ```
-
-2.  Generate a certificate for signing the JWTs
-
-    ```posh
     # Generate private and public key
-    openssl req `
-        -x509 `
-        -newkey rsa:2048 `
-        -keyout new-oauth-key.pem `
-        -out new-oauth-cert.pem `
-        -days 9125 `
-        -nodes `
+    openssl req \
+        -x509 \
+        -newkey rsa:2048 \
+        -keyout new-oauth-key.pem \
+        -out new-oauth-cert.pem \
+        -days 9125 \
+        -nodes \
         -subj "/O=RESTer/CN=rester.my-server.tld"
     # Combine them to a PFX file
-    openssl pkcs12 `
-        -in new-oauth-cert.pem `
-        -inkey new-oauth-key.pem `
-        -export `
+    openssl pkcs12 \
+        -in new-oauth-cert.pem \
+        -inkey new-oauth-key.pem \
+        -export \
         -out new-oauth-cert.pfx
-    # Convert PFX to Base64
+    ```
+
+    Convert PFX to Base64
+
+    ```posh
     [Convert]::ToBase64String([System.IO.File]::ReadAllBytes("C:/path/to/new-oauth-cert.pfx"))
     ```
 
-3.  Store environment variables in the [Secret Manager](https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-2.1&tabs=visual-studio-code#secret-manager):
+2.  Store environment variables in the [Secret Manager](https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-2.1&tabs=visual-studio-code#secret-manager):
 
     ```sh
     cd RESTer.Server
@@ -46,12 +46,21 @@ members of a team.
     dotnet user-secrets set RESTER_IDP_GOOGLE_CLIENT_SECRET <google oauth2 client secret>
     ```
 
-4.  Start server
+### Start development
+
+1.  Start local MongoDB
+
+    ```sh
+    docker run --name rester-db -p 27017:27017 -d mongo
+    ```
+
+1.  Start server
 
     ```sh
     ASPNETCORE_ENVIRONMENT=Development dotnet run RESTer.Server/RESTer.Server.csproj
     # Or
-    ASPNETCORE_ENVIRONMENT=Development dotnet watch run RESTer.Server/RESTer.Server.csproj
+    cd RESTer.Server
+    ASPNETCORE_ENVIRONMENT=Development dotnet watch run
     ```
 
 ## Build Docker image
