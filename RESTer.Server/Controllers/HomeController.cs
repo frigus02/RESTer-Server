@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -81,6 +82,15 @@ namespace RESTer.Server.Controllers
             await _stsOAuth2RefreshTokenRepository.DeleteAllForClientAndUserAsync(clientId, userId);
 
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public IActionResult Error()
+        {
+            return View(new ErrorModel
+            {
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            });
         }
     }
 }
