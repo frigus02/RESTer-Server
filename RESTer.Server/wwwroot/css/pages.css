@@ -1,0 +1,17 @@
+.register-photo,
+.account-photo {
+    float: right;
+}
+
+.account-logout {
+    margin-top: 1em;
+}
+
+.authorized-client {
+    display: flex;
+    align-items: baseline;
+}
+
+.authorized-client form {
+    margin-left: 1em;
+}

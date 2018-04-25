@@ -1,14 +1,6 @@
-FROM node:9.11.1
+FROM microsoft/aspnetcore:2.0.7
 
-WORKDIR /rester
-ADD package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
-ADD app app/
-ADD bin bin/
+WORKDIR /app
+COPY RESTer.Server/publish/ .
 
-ENV PORT=80 \
-    NODE_ENV=production
-
-EXPOSE 80
-
-CMD node /rester/bin/www
+ENTRYPOINT ["dotnet", "RESTer.Server.dll"]

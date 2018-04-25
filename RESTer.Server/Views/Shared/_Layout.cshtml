@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        @if (ViewData["Title"] != null)
+        {
+            <text>@ViewData["Title"] - RESTer Account</text>
+        }
+        else
+        {
+            <text>RESTer Account</text>
+        }
+    </title>
+
+    <link rel="icon" type="image/png" href="~/images/favicon.png">
+    <link rel="shortcut icon" type="image/png" href="~/images/favicon.png">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,700|Roboto:400,300,300italic,400italic,500,500italic,700,700italic" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/css/main.css">
+    <link rel="stylesheet" href="~/css/forms.css">
+    <link rel="stylesheet" href="~/css/components.css">
+    <link rel="stylesheet" href="~/css/pages.css">
+</head>
+<body>
+     <header class="header">
+        <div class="header__title">
+            <img src="~/images/icon.svg" class="header__logo">
+            <h1 class="header__heading">
+                <a href="/">RESTer Account</a>
+                <small>Synchronize all your saved RESTer requests across devices.</small>
+            </h1>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div class="header__user">
+                    <div>@User.Identity.Name</div>
+                    <a href="/sts/logout?returnUrl=%2f">Logout</a>
+                </div>
+            }
+        </div>
+    </header>
+
+    <main class="main">
+        @RenderBody()
+    </main>
+
+    <footer class="footer">
+        <nav>
+            <ul class="footer__links">
+                <li>
+                    <a href="https://github.com/frigus02/RESTer">RESTer on GitHub</a>
+                </li>
+                <li>
+                    <a href="https://github.com/frigus02/RESTer-Server">This website on GitHub</a>
+                </li>
+                <li>
+                    <a href="/imprint">Imprint</a>
+                </li>
+            </ul>
+        </nav>
+    </footer>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

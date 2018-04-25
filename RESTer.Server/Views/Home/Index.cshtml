@@ -1,0 +1,106 @@
+﻿@model RESTer.Server.Models.Home.IndexModel
+
+<h2>What is RESTer?</h2>
+<p>A REST client for almost any web service. It's available as a browser extension for both
+    <a href="https://addons.mozilla.org/firefox/addon/rester">Firefox</a> and
+    <a href="https://chrome.google.com/webstore/detail/rester/eejfoncpjfgmeleakejdcanedmefagga">Chrome</a>.</p>
+
+
+<h2>Your Account</h2>
+@if (!User.Identity.IsAuthenticated)
+{
+    <a href="/sts/login?returnUrl=%2f">Login to existing account or create new account</a>
+}
+else
+{
+    <img src="@Model.PictureUrl" alt="Profile photo" class="account-photo">
+
+    @if (!@Model.IsEditMode)
+    {
+        <dl class="summary-table">
+            <dt>Given name:</dt>
+            <dd>@Model.GivenName</dd>
+            <dt>Family name:</dt>
+            <dd>@Model.FamilyName</dd>
+            <dt>Display name:</dt>
+            <dd>@Model.DisplayName</dd>
+            <dt>Street:</dt>
+            <dd>@Model.Street</dd>
+            <dt>City:</dt>
+            <dd>@Model.City</dd>
+            <dt>ZIP/Postal code:</dt>
+            <dd>@Model.Zip</dd>
+            <dt>State/Province:</dt>
+            <dd>@Model.State</dd>
+            <dt>Country:</dt>
+            <dd>@Model.Country</dd>
+            <dt>Email:</dt>
+            <dd>@Model.Email</dd>
+        </dl>
+
+        <a href="/?editaccount=1">Edit account</a>
+
+        <h2>Authorized Clients</h2>
+        @if (Model.AuthorizedClients.Length > 0)
+        {
+            <ul>
+                @for (int i = 0; i < Model.AuthorizedClients.Length; i++)
+                {
+                    <li>
+                        <div class="authorized-client">
+                            @Model.AuthorizedClients[i]
+                            <form asp-action="RevokeClientAccess" method="POST">
+                                <input type="hidden" name="clientId" value="@Model.AuthorizedClients[i]">
+                                <input type="submit" value="Revoke access">
+                            </form>
+                        </div>
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p>No clients authorized.</p>
+        }
+    }
+    else
+    {
+        <form asp-action="UpdateAccount" method="POST">
+            <div class="form-field">
+                <label asp-for="GivenName">Given name:</label>
+                <input asp-for="GivenName">
+            </div>
+            <div class="form-field">
+                <label asp-for="FamilyName">Family name:</label>
+                <input asp-for="FamilyName">
+            </div>
+            <div class="form-field">
+                <label asp-for="DisplayName">Display name:</label>
+                <input asp-for="DisplayName">
+            </div>
+            <div class="form-field">
+                <label asp-for="Street">Street:</label>
+                <input asp-for="Street">
+            </div>
+            <div class="form-field">
+                <label asp-for="City">City:</label>
+                <input asp-for="City">
+            </div>
+            <div class="form-field">
+                <label asp-for="Zip">ZIP/Postal code:</label>
+                <input asp-for="Zip">
+            </div>
+            <div class="form-field">
+                <label asp-for="State">State/Province:</label>
+                <input asp-for="State">
+            </div>
+            <div class="form-field">
+                <label asp-for="Country">Country:</label>
+                <input asp-for="Country">
+            </div>
+
+            <a href="/">Cancel</a>
+            <input type="submit" value="Update account">
+        </form>
+    }
+}

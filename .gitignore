@@ -1,6 +1,4 @@
-node_modules/
-bower_components/
-build/
-.env
-npm-debug.log
-yarn-error.log
+/.vscode
+bin/
+obj/
+publish/

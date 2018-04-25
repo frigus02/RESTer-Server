@@ -1,0 +1,56 @@
+@{
+    ViewData["Title"] = "Register";
+}
+@model RESTer.Server.Models.Sts.RegisterModel
+
+<h2>Register</h2>
+<form asp-controller="Sts" asp-action="Register" method="POST">
+    <input type="hidden" name="returnUrl" value="@Model.ReturnUrl">
+
+    <h3>Profile</h3>
+    <img src="@Model.PictureUrl" alt="Profile photo" class="register-photo">
+    <div class="form-field">
+        <label for="givenName">Given name:</label>
+        <input type="text" id="givenName" name="givenName" value="@Model.GivenName">
+    </div>
+    <div class="form-field">
+        <label for="familyName">Family name:</label>
+        <input type="text" id="familyName" name="familyName" value="@Model.FamilyName">
+    </div>
+    <div class="form-field">
+        <label for="displayName">Display name:</label>
+        <input type="text" id="displayName" name="displayName" value="@Model.DisplayName">
+    </div>
+    <div class="form-field">
+        <label for="street">Street:</label>
+        <input type="text" id="street" name="street" value="@Model.Street">
+    </div>
+    <div class="form-field">
+        <label for="city">City:</label>
+        <input type="text" id="city" name="city" value="@Model.City">
+    </div>
+    <div class="form-field">
+        <label for="zip">ZIP/Postal code:</label>
+        <input type="text" id="zip" name="zip" value="@Model.Zip">
+    </div>
+    <div class="form-field">
+        <label for="state">State/Province:</label>
+        <input type="text" id="state" name="state" value="@Model.State">
+    </div>
+    <div class="form-field">
+        <label for="country">Country:</label>
+        <input type="text" id="country" name="country" value="@Model.Country">
+    </div>
+    <div class="form-field">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" readonly value="@Model.Email">
+    </div>
+
+    <h3>Account</h3>
+    <dl class="summary-table">
+        <dt>IDP:</dt>
+        <dd>@Model.Idp</dd>
+    </dl>
+
+    <input type="submit" value="Create Account">
+</form>
