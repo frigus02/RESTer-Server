@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -66,6 +67,7 @@ namespace RESTer.Server.Controllers.Sts
                 FamilyName = info.Principal.FindFirstValue(ClaimTypes.Surname),
                 DisplayName = info.Principal.FindFirstValue(ClaimTypes.Name),
                 Email = email,
+                PictureUrl = new Uri(info.Principal.FindFirstValue("urn:rester:picture")),
                 Idp = info.LoginProvider,
                 ReturnUrl = returnUrl
             });
@@ -85,7 +87,8 @@ namespace RESTer.Server.Controllers.Sts
                 Zip = model.Zip,
                 State = model.State,
                 Country = model.Country,
-                Email = info.Principal.FindFirstValue(ClaimTypes.Email)
+                Email = info.Principal.FindFirstValue(ClaimTypes.Email),
+                PictureUrl = new Uri(info.Principal.FindFirstValue("urn:rester:picture"))
             };
 
             await _userManager.CreateAsync(user);

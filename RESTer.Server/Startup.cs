@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -63,6 +64,7 @@ namespace RESTer.Server
                     googleOptions.ClientId = Configuration["RESTER_IDP_GOOGLE_CLIENT_ID"];
                     googleOptions.ClientSecret = Configuration["RESTER_IDP_GOOGLE_CLIENT_SECRET"];
                     googleOptions.CallbackPath = "/sts/callback/google";
+                    googleOptions.ClaimActions.MapJsonSubKey("urn:rester:picture", "image", "url");
                 });
 
             // MVC
