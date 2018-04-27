@@ -21,10 +21,10 @@ namespace RESTer.Server.Controllers.Sts.Issue
             new[] { "code", "token" },
             StringComparer.OrdinalIgnoreCase);
 
-        private UserManager<User> _userManager;
-        private IOAuth2Service _oAuth2Service;
-        private IStsOAuth2CodeRepository _stsOAuth2CodeRepository;
-        private IStsOAuth2RefreshTokenRepository _stsOAuth2RefreshTokenRepository;
+        private readonly UserManager<User> _userManager;
+        private readonly IOAuth2Service _oAuth2Service;
+        private readonly IStsOAuth2CodeRepository _stsOAuth2CodeRepository;
+        private readonly IStsOAuth2RefreshTokenRepository _stsOAuth2RefreshTokenRepository;
 
         public OAuth2Controller(
             UserManager<User> userManager,

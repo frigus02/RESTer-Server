@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using MongoDB.Driver;
 using RESTer.Server.Core;
+using RESTer.Server.Core.Models;
 using RESTer.Server.Repositories;
 using RESTer.Server.Repositories.Models;
 using RESTer.Server.Utilities;
@@ -25,6 +27,16 @@ namespace RESTer.Server
 
         public void ConfigureServices(IServiceCollection services)
         {
+            // Config
+            var cert = CertificateHelpers.CreateCertificateFromPfx(Configuration["RESTER_OAUTH2_CERTIFICATE"]);
+            var issuer = "https://rester.kuehle.me";
+            services.Configure<OAuth2Config>(config =>
+            {
+                config.ExpiresIn = 3600; // 1h
+                config.Issuer = issuer;
+                config.SigningCredentials = CertificateHelpers.CreateSigningCredentials(cert);
+            });
+
             // Database
             var db = new MongoClient(Configuration["RESTER_MONGO_DB_URL"]);
             db.GetDatabase(Configuration["RESTER_MONGO_DB_NAME"]).SetupIndexes();
@@ -40,7 +52,7 @@ namespace RESTer.Server
             services.AddTransient<IStsOAuth2RefreshTokenRepository, StsOAuth2RefreshTokenRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
 
-            // Authentication
+            // Authentication MVC
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services
                 .AddIdentityCore<User>(identityOptions => { })
@@ -65,6 +77,19 @@ namespace RESTer.Server
                     googleOptions.ClientSecret = Configuration["RESTER_IDP_GOOGLE_CLIENT_SECRET"];
                     googleOptions.CallbackPath = "/sts/callback/google";
                     googleOptions.ClaimActions.MapJsonSubKey("urn:rester:picture", "image", "url");
+                });
+
+            // Authentication WebAPI
+            services
+                .AddAuthentication()
+                .AddJwtBearer(jwtBearerOptions =>
+                {
+                    jwtBearerOptions.TokenValidationParameters.IssuerSigningKey = CertificateHelpers.CreateIssuerSigningKey(cert);
+                    jwtBearerOptions.TokenValidationParameters.ValidAudience = "rester";
+                    jwtBearerOptions.TokenValidationParameters.ValidIssuer = issuer;
+
+                    var validator = (JwtSecurityTokenHandler)jwtBearerOptions.SecurityTokenValidators[0];
+                    validator.MapInboundClaims = false;
                 });
 
             // MVC

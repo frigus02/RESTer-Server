@@ -9,7 +9,7 @@ namespace RESTer.Server.Repositories
 {
     public class StsOAuth2RefreshTokenRepository : IStsOAuth2RefreshTokenRepository
     {
-        private IMongoCollection<StsOAuth2RefreshToken> _collection;
+        private readonly IMongoCollection<StsOAuth2RefreshToken> _collection;
 
         public StsOAuth2RefreshTokenRepository(IMongoDatabase db)
         {

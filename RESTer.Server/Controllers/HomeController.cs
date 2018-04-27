@@ -15,9 +15,9 @@ namespace RESTer.Server.Controllers
 {
     public class HomeController : Controller
     {
-        private SignInManager<User> _signInManager;
-        private UserManager<User> _userManager;
-        private IStsOAuth2RefreshTokenRepository _stsOAuth2RefreshTokenRepository;
+        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _userManager;
+        private readonly IStsOAuth2RefreshTokenRepository _stsOAuth2RefreshTokenRepository;
 
         public HomeController(
             SignInManager<User> signInManager,

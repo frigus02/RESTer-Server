@@ -12,8 +12,8 @@ namespace RESTer.Server.Controllers.Sts
     [Route("sts/[action]")]
     public class StsController : Controller
     {
-        private SignInManager<User> _signInManager;
-        private UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _userManager;
 
         public StsController(SignInManager<User> signInManager, UserManager<User> userManager)
         {

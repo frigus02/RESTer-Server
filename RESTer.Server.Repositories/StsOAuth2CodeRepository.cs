@@ -10,7 +10,7 @@ namespace RESTer.Server.Repositories
     {
         private const int DefaultValidForMillis = 1000 * 60 * 5;
 
-        private IMongoCollection<StsOAuth2Code> _collection;
+        private readonly IMongoCollection<StsOAuth2Code> _collection;
 
         public StsOAuth2CodeRepository(IMongoDatabase db)
         {
