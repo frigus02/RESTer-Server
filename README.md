@@ -29,7 +29,13 @@ members of a team.
         -out new-oauth-cert.pfx
     ```
 
-    Convert PFX to Base64
+    Convert PFX to Base64 (Linux/Mac)
+
+    ```sh
+    base64 </path/to/new-oauth-cert.pfx
+    ```
+
+    Convert PFX to Base64 (Windows)
 
     ```posh
     [Convert]::ToBase64String([System.IO.File]::ReadAllBytes("C:/path/to/new-oauth-cert.pfx"))
@@ -57,7 +63,7 @@ members of a team.
 1.  Start server
 
     ```sh
-    ASPNETCORE_ENVIRONMENT=Development dotnet run RESTer.Server/RESTer.Server.csproj
+    ASPNETCORE_ENVIRONMENT=Development dotnet run --project RESTer.Server/RESTer.Server.csproj
     # Or
     cd RESTer.Server
     ASPNETCORE_ENVIRONMENT=Development dotnet watch run
